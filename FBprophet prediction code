@@ -1,0 +1,42 @@
+import pandas as pd 
+import matplotlib.pyplot as plt
+import numpy as np 
+import fbprophet
+import warnings 
+
+warnings.filterwarnings("ignore")
+
+df= pd.read_csv(r"quimicos.csv")
+
+df.head()
+
+df.dtypes
+
+df.columns= ["ds","y"]
+df.head()
+
+df.plot()
+
+df["ds"]= pd.to_datetime(df.ds)
+df.head()
+
+from fbprophet import Prophet
+model =   Prophet()
+model.fit(df)
+
+future= model.make_future_dataframe(periods=365)
+
+df.tail()
+
+future.tail()
+
+pred=model.predict(future)
+
+pred
+
+pred[["ds","yhat","yhat_lower","yhat_upper"]].head()
+
+model.plot(pred)
+
+model.plot_components(pred)
+
